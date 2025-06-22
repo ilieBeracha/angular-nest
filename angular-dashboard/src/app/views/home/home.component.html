@@ -1,19 +1,21 @@
 <mat-sidenav-container class="example-container">
-  <mat-sidenav #sidenav [mode]="mode.value || 'over'">
-    <p>
-      <mat-radio-group class="example-radio-group" [formControl]="mode">
-        <a routerLink="/dashboard">Dashboard</a>
-        <a routerLink="/settings">Settings</a>
-        <a routerLink="/profile">Profile</a>
-        <a routerLink="/logout">Logout</a>
-      </mat-radio-group>
-    </p>
+  <mat-sidenav #sidenav [mode]="mode.value || 'over'" class="sidenav">
+    <mat-radio-group class="example-radio-group" [formControl]="mode">
+      <a mat-list-item routerLink="/dashboard">Dashboard</a>
+      <a mat-list-item routerLink="/settings">Settings</a>
+      <a mat-list-item routerLink="/profile">Profile</a>
+      <a mat-list-item routerLink="/logout">Logout</a>
+    </mat-radio-group>
   </mat-sidenav>
-
   <mat-sidenav-content>
-    <button class="menu-button" mat-icon-button (click)="sidenav.toggle()">
+    <button
+      mat-icon-button
+      class="menu-button"
+      (click)="sidenav.toggle()"
+      aria-label="Toggle menu"
+    >
       <mat-icon>menu</mat-icon>
     </button>
-    <router-outlet />
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

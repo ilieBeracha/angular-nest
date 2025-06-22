@@ -1,0 +1,49 @@
+.dashboard-container {
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  height: 200px;
+}
+
+.card {
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 5px;
+}
+
+.card-header {
+  display: flex;
+  gap: 10px;
+}
+
+.card-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  font-size: 16px;
+}
+
+.card-body {
+  display: flex;
+  flex: 1;
+}
+
+.card-content-placeholder {
+  flex: 1;
+  border: 2px dashed #000;
+  border-radius: 10px;
+  height: 150px;
+}

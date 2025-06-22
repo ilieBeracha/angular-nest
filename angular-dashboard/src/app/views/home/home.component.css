@@ -27,10 +27,13 @@ mat-sidenav {
   border-radius: 0px;
 }
 
+button {
+  color: var(--mat-sys-surface);
+}
+
 .menu-button {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1000;
-  color: var(--mat-sys-on-surface);
 }
