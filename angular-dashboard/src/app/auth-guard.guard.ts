@@ -10,7 +10,7 @@ export const AuthGuard: CanActivateFn = (route, state) => {
   if (auth.isAuthenticated()) {
     // If trying to access login page while authenticated, redirect to home
     if (state.url.includes('/auth')) {
-      router.navigate(['/home']);
+      router.navigate(['/dashboard']);
       return false;
     }
     return true; // Authorized

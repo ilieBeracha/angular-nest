@@ -1,1 +1,19 @@
-<p>home works!</p>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav [mode]="mode.value || 'over'">
+    <p>
+      <mat-radio-group class="example-radio-group" [formControl]="mode">
+        <a routerLink="/dashboard">Dashboard</a>
+        <a routerLink="/settings">Settings</a>
+        <a routerLink="/profile">Profile</a>
+        <a routerLink="/logout">Logout</a>
+      </mat-radio-group>
+    </p>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <button class="menu-button" mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

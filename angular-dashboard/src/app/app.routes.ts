@@ -15,10 +15,20 @@ export const routes: Routes = [
       import('./views/auth/auth.component').then((m) => m.AuthComponent),
   },
   {
-    path: 'home',
+    path: '',
     canActivate: [AuthGuard],
     loadComponent: () =>
       import('./views/home/home.component').then((m) => m.HomeComponent),
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./views/dashboard/dashboard.component').then(
+            (m) => m.DashboardComponent
+          ),
+      },
+    ],
   },
-  { path: '**', redirectTo: '404' },
+
+  { path: '**', redirectTo: 'dashboard' },
 ];

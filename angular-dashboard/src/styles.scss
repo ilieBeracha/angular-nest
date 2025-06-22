@@ -1,3 +1,13 @@
+@use "@angular/material" as mat;
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$azure-palette,
+    density: 0,
+    
+  ));
+}
 :host {
   --bright-blue: oklch(51.01% 0.274 263.83);
   --electric-violet: oklch(53.18% 0.28 296.97);
@@ -54,9 +64,12 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
+a {
+  text-decoration: none;
+  color: var(--mat-sys-on-surface);
+}
 p {
   margin: 0;
   padding: 0;
-  color: var(--gray-700);
+
 }

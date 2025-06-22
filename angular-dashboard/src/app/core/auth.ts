@@ -1,7 +1,7 @@
 import { computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/authService';
 import { User } from '../../types/user';
-import { finalize, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 export class Auth {
@@ -10,14 +10,14 @@ export class Auth {
   private user = signal<User | null>(null);
   private accessToken = signal<string | null>(localStorage.getItem('access'));
 
-  private isLoading = signal(false);
+  isLoading = signal(false);
 
   login(email: string, password: string) {
-    this.isLoading.set(true);
     this.authService
       .login(email, password)
       .pipe(
         tap((response) => {
+          this.isLoading.set(true);
           this.user.set(response.user);
           this.setTokens(response.access_token, response.refresh_token);
         })
@@ -25,7 +25,7 @@ export class Auth {
       .subscribe({
         next: () => {
           console.log('login success');
-          this.router.navigate(['/home'], { replaceUrl: true });
+          this.router.navigate(['/dashboard'], { replaceUrl: true });
         },
         error: (error) => {
           console.error(error);
