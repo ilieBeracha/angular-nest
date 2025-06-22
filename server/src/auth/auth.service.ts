@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/entities/user.entity';
 import { AuthResponseDto } from './dto/auth-response.dto';
+import { Page } from 'src/page/entities/page.entity';
 
 @Injectable()
 export class AuthService {
@@ -12,19 +13,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-  ): Promise<AuthResponseDto> {
+  async register(email: string, password: string, firstName: string, lastName: string): Promise<AuthResponseDto> {
     const hash = await bcrypt.hash(password, 10);
-    const user = await this.userService.register(
-      email,
-      hash,
-      firstName,
-      lastName,
-    );
+    const user = await this.userService.register(email, hash, firstName, lastName);
     return this.buildAuthResponse(user);
   }
 
@@ -35,26 +26,24 @@ export class AuthService {
     }
     return this.buildAuthResponse(userWithSites);
   }
-
+  
   private async buildAuthResponse(user: User): Promise<AuthResponseDto> {
     const tokens = await this.generateTokens(user);
     return {
-      user: this.getUserData(user),
+      user: this.getUserData(user) as User & { pages: Page[] },
       ...tokens,
     };
   }
 
   async validateUser(email: string, pass: string) {
     const user = await this.userService.findByEmail(email);
-    if (user && (await bcrypt.compare(pass, user.password))) {
+    if (user && await bcrypt.compare(pass, user.password)) {
       return user;
     }
     return null;
   }
 
-  async refresh(
-    refreshToken: string,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+  async refresh(refreshToken: string): Promise<{ access_token: string; refresh_token: string }> {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret',
@@ -71,9 +60,7 @@ export class AuthService {
     }
   }
 
-  private async generateTokens(
-    user: User,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+  private async generateTokens(user: User): Promise<{ access_token: string; refresh_token: string }> {
     const payload = {
       sub: user.id,
       email: user.email,
@@ -98,6 +85,12 @@ export class AuthService {
       email: user.email,
       first_name: user.first_name,
       last_name: user.last_name,
+      sites: user.sites?.map(site => ({
+        id: site.id,
+        name: site.name,
+        domain: site.domain,
+        layout_id: site.layout_id,
+      })) || []
     };
   }
 }

@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,13 +9,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
-  async register(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-  ) {
+  ) {}    
+  async register(email: string, password: string, firstName: string, lastName: string) {
     const user = await this.findByEmail(email);
     if (user) {
       throw new ConflictException('User already exists');
@@ -35,11 +26,12 @@ export class UserService {
   async me(user: User): Promise<AuthResponseDto> {
     const currentUser = await this.userRepository.findOne({
       where: { id: user.id },
+      relations: ['sites'],
     });
     if (!currentUser) {
       throw new UnauthorizedException('User not found');
     }
-
+    
     return {
       access_token: 'access_token',
       refresh_token: 'refresh_token',
@@ -48,26 +40,30 @@ export class UserService {
         email: currentUser.email,
         first_name: currentUser.first_name,
         last_name: currentUser.last_name,
-      },
+        sites: currentUser.sites || [],
+      }
     };
-  }
+  }     
 
-  findAll() {
+
+  findAll() { 
     return this.userRepository.find();
-  }
+  } 
 
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { email },
       select: ['id', 'email', 'password', 'first_name', 'last_name'],
+      relations: ['sites']
     });
     return user;
   }
 
   async findOne(id: string) {
-    return this.userRepository.findOne({
+    return this.userRepository.findOne({ 
       where: { id },
       select: ['id', 'email', 'password', 'first_name', 'last_name'],
+      relations: ['sites']
     });
   }
 

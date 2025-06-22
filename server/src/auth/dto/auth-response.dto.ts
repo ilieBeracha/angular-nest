@@ -1,10 +1,21 @@
-export class AuthResponseDto {
-  access_token: string;
-  refresh_token: string;
-  user: {
+import { Page } from "src/page/entities/page.entity";
+
+export class SiteDto {
     id: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-  };
+    name: string;
+    domain: string;
+    layout_id: string;
+}
+
+export class AuthResponseDto {
+    access_token: string;
+    refresh_token: string;
+    user: {
+        id: string;
+        email: string;
+        first_name: string;
+        last_name: string;
+        sites?: SiteDto[];
+        pages?: Page[];
+    };
 }
