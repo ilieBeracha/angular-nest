@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { injectMutation } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
-import { AuthService } from '../../../services/authService';
+import { Auth } from '../../core/auth';
 
 @Component({
   selector: 'app-auth',
@@ -13,18 +11,12 @@ import { AuthService } from '../../../services/authService';
   standalone: true,
 })
 export class AuthComponent {
-  authService = inject(AuthService);
+  auth = inject(Auth);
+
   email = '';
   password = '';
 
-  loginMutation = injectMutation(() => ({
-    mutationFn: (credentials: { email: string; password: string }) =>
-      lastValueFrom(
-        this.authService.login(credentials.email, credentials.password)
-      ),
-  }));
-
   onSubmitForm() {
-    this.loginMutation.mutate({ email: this.email, password: this.password });
+    this.auth.login(this.email, this.password);
   }
 }

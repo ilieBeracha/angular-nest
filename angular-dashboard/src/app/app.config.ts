@@ -5,6 +5,7 @@ import { provideTanStackQuery } from '@tanstack/angular-query-experimental';
 import { QueryClient } from '@tanstack/angular-query-experimental';
 
 import { routes } from './app.routes';
+import { Auth } from './core/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,5 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideTanStackQuery(new QueryClient()),
     provideHttpClient(),
+    Auth,
   ],
 };
