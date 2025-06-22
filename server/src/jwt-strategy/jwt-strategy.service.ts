@@ -1,9 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserService } from 'src/user/user.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { UserService } from "src/user/user.service";
 
-const jwtSecret = process.env.JWT_SECRET || 'secret';
+const jwtSecret = process.env.JWT_SECRET || "secret";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
